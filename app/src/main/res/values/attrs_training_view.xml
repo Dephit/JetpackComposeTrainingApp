@@ -1,0 +1,10 @@
+<resources>
+    <declare-styleable name="TrainingView">
+        <attr name="trainingName" format="string" />
+        <attr name="trainingDate" format="string" />
+        <attr name="comment" format="string" />
+        <attr name="exampleDimension" format="dimension" />
+        <attr name="exampleColor" format="color" />
+        <attr name="exampleDrawable" format="color|reference" />
+    </declare-styleable>
+</resources>
