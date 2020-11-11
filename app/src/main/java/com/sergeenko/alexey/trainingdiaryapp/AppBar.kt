@@ -11,12 +11,13 @@ import androidx.compose.ui.graphics.Color
 @Composable
 fun AppBar(): @Composable (() -> Unit)? {
     return {
-        TopAppBar(backgroundColor = Color.Cyan) {
+        TopAppBar(backgroundColor = Color.Blue) {
                 Text(
-                    text = "AppBar",
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .align(Alignment.CenterHorizontally)
+                        text = "AppBar",
+                        color = Color.White,
+                        modifier = Modifier
+                                .align(Alignment.CenterVertically)
+                                .align(Alignment.CenterHorizontally)
                 )
             }
     }

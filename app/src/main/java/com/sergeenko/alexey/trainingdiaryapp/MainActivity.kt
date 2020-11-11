@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.ParentDataModifier
 import androidx.compose.ui.VerticalAlignmentLine
+import androidx.compose.ui.focus.ExperimentalFocus
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.graphics.vector.VectorAsset
@@ -32,6 +33,7 @@ import java.nio.file.WatchEvent
 import java.text.SimpleDateFormat
 import java.util.*
 
+@ExperimentalFocus
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: StartViewModel by inject()
