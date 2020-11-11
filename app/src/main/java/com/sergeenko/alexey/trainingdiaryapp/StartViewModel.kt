@@ -10,6 +10,7 @@ import kotlin.random.Random
 
 class StartViewModel(application: Application) : BaseModel(application){
     val globalState = mutableStateOf<UserListState>(UserListState.DefaultState)
+    val dismissState = mutableStateOf(false)
 
     fun loadTrainingList() {
         globalState.value = UserListState.LoadingState
@@ -18,12 +19,17 @@ class StartViewModel(application: Application) : BaseModel(application){
             for (i in 0..1000){
                 data.add(
                     TrainingData(
-                        name = "squat $i",
-                        comment = "it was a good day $i"
+                            name = "squat $i",
+                            date = Calendar.getInstance(),
+                            comment = "it was a good day $i"
                     )
                 )
             }
             globalState.value = UserListState.LoadedState(data)
         }
+    }
+
+    fun changeDissmisState(b: Boolean) {
+        dismissState.value = b
     }
 }

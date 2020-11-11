@@ -1,9 +1,12 @@
 package com.sergeenko.alexey.trainingdiaryapp
 
+import android.util.Log
 import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.gestures.ScrollableController
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumnFor
+import androidx.compose.foundation.lazy.LazyColumnForIndexed
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -12,6 +15,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.savedinstancestate.rememberSavedInstanceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.gesture.ScrollCallback
+import androidx.compose.ui.gesture.scrollGestureFilter
+import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -20,64 +27,70 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 import java.util.*
+import kotlin.system.measureTimeMillis
 
 class UserList{
 
     @Composable
     fun trainingList(data: LinkedList<TrainingData>, state: MutableState<UserListState>) {
-        ScrollableColumn{
-            data.forEach {
-                singleTrainingItem(it, state)
-            }
+        LazyColumnFor(items = data,
+                contentPadding = PaddingValues(all = 5.dp)
+        ) {
+            singleTrainingItem(it, state)
         }
     }
 
     @Composable
     private fun singleTrainingItem(trainingData: TrainingData, state: MutableState<UserListState>) {
         Column(
-            modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(
+                        bottom = 5.dp
+                ),
         ) {
             Box(
-                padding = 5.dp,
-                paddingBottom = 2.5.dp,
-            ){
-                Box(
-                    modifier = Modifier.clickable(onClick = {
-                        state.value = UserListState.ErrorState
-                    },
-
-                        ),
+                    modifier = Modifier.clickable(onClick = { state.value = UserListState.ErrorState }),
                     backgroundColor = Color.Blue,
                     border = BorderStroke(2.dp, Color.Magenta),
                     shape = RoundedCornerShape(corner = CornerSize(5.dp)),
                     padding = 10.dp,
                     children = {
-                        Row(modifier = Modifier.fillMaxWidth().align(Alignment.Start)) {
+                        ConstraintLayout(
+                                modifier = Modifier.fillMaxSize()
+                        ) {
+                            val (name, date) = createRefs()
                             trainingData.name?.let {
                                 Text(
-                                    text = it,
-                                    style = itemTextStyle()
-                                )
+                                        modifier = Modifier.constrainAs(name){
+                                            linkTo(start = parent.start, end = date.start, bias = 0f)
+                                            linkTo(top = parent.top, bottom = parent.bottom, bias = 0.5f)
+                                        },
+                                        text = it,
+                                        style = itemTextStyle())
                             }
                             trainingData.date?.getFormattedDate()?.let {
                                 Text(
-                                    text = it,
-                                    style = itemTextStyle(),
-                                    textAlign = TextAlign.End
+                                        modifier = Modifier.constrainAs(date){
+                                            linkTo(start = parent.start, end = parent.end, bias = 1f)
+                                            linkTo(top = parent.top, bottom = parent.bottom, bias = 0.5f)
+                                        },
+                                        text = it,
+                                        style = itemTextStyle(),
+                                        textAlign = TextAlign.End
                                 )
                             }
                         }
                         trainingData.comment?.let {
                             Text(
-                                text = it,
-                                style = itemTextStyle(),
+                                    text = it,
+                                    style = itemTextStyle(),
                             )
                         }
                     }
-                )
-            }
+            )
         }
+
     }
 
     private fun itemTextStyle(): TextStyle {

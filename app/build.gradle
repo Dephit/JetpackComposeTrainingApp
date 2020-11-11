@@ -104,4 +104,5 @@ dependencies {
     implementation "androidx.compose.runtime:runtime-rxjava2:$compose_version"
     androidTestImplementation "androidx.ui:ui-test:$compose_version"
 
+    //implementation "com.github.luca992:coil-composable:0.3.3"
 }
