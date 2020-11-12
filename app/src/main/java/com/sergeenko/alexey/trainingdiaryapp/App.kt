@@ -40,6 +40,9 @@ val roomModule = module {
                 .fallbackToDestructiveMigration()
                 .build()
     }
+    single {
+        (get() as AppDatabase).trainingDao()
+    }
 }
 
 

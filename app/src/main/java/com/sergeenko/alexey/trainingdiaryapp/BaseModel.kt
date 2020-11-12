@@ -7,6 +7,6 @@ import org.koin.android.ext.android.inject
 
 open class BaseModel(application: Application): AndroidViewModel(application) {
 
-    private val app = (application as App)
+    internal val app = (application as App)
 
 }

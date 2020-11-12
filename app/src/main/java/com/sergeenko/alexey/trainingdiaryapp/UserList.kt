@@ -15,11 +15,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.savedinstancestate.rememberSavedInstanceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawShadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.gesture.ScrollCallback
 import androidx.compose.ui.gesture.scrollGestureFilter
 import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -34,12 +36,13 @@ import kotlin.system.measureTimeMillis
 class UserList{
 
     @Composable
-    fun trainingList(data: LinkedList<TrainingData>, state: MutableState<UserListState>) {
+    fun trainingList(data: List<TrainingData>, state: MutableState<UserListState>) {
         LazyColumnFor(items = data,
                 contentPadding = PaddingValues(all = 5.dp)
         ) {
             singleTrainingItem(it, state)
         }
+
     }
 
     @Composable
@@ -47,12 +50,12 @@ class UserList{
         Column(
                 modifier = Modifier.fillMaxWidth().padding(
                         bottom = 5.dp
-                ),
+                ).drawShadow(elevation = 5.dp, opacity = 0.8f, shape = RoundedCornerShape(corner = CornerSize(5.dp)), clip = true),
         ) {
             Box(
                     modifier = Modifier.clickable(onClick = { state.value = UserListState.ErrorState }),
-                    backgroundColor = Color.Blue,
-                    border = BorderStroke(2.dp, Color.Magenta),
+                    backgroundColor = colorResource(R.color.purple_500),
+                    //border = BorderStroke(2.dp, colorResource(R.color.purple_700)),
                     shape = RoundedCornerShape(corner = CornerSize(5.dp)),
                     padding = 10.dp,
                     children = {
@@ -93,9 +96,10 @@ class UserList{
 
     }
 
+    @Composable
     private fun itemTextStyle(): TextStyle {
         return TextStyle(
-            color = Color.White,
+            color = colorResource(R.color.white),
             fontFamily = FontFamily.Serif,
             fontSize = TextUnit.Sp(18),
             fontWeight = FontWeight.Medium,

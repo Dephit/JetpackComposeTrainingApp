@@ -7,14 +7,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.TextStyle
 
 @Composable
 fun AppBar(): @Composable (() -> Unit)? {
     return {
-        TopAppBar(backgroundColor = Color.Blue) {
+        TopAppBar(backgroundColor = colorResource(R.color.purple_700)) {
                 Text(
                         text = "AppBar",
-                        color = Color.White,
+                        style = TextStyle(color = colorResource(R.color.white)),
                         modifier = Modifier
                                 .align(Alignment.CenterVertically)
                                 .align(Alignment.CenterHorizontally)

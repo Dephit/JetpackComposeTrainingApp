@@ -1,35 +1,21 @@
 package com.sergeenko.alexey.trainingdiaryapp
 
 import android.os.Bundle
-import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.ColumnScope.align
-import androidx.compose.foundation.layout.ColumnScope.alignWithSiblings
-import androidx.compose.foundation.layout.RowScope.align
-import androidx.compose.foundation.layout.RowScope.gravity
-import androidx.compose.foundation.layout.RowScope.weight
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.ParentDataModifier
-import androidx.compose.ui.VerticalAlignmentLine
 import androidx.compose.ui.focus.ExperimentalFocus
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.imageFromResource
-import androidx.compose.ui.graphics.vector.VectorAsset
 import androidx.compose.ui.platform.setContent
-import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.InternalInteropApi
-import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.coroutines.FlowPreview
 import org.koin.android.ext.android.inject
-import java.nio.file.WatchEvent
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -48,6 +34,7 @@ class MainActivity : AppCompatActivity() {
                     bodyContent = {
                         ConstraintLayout(
                                 Modifier.fillMaxSize()
+                                        .background(color = colorResource(id = R.color.teal_700))
                         ) {
                             manageScreenByState()
                             showDialog()
@@ -59,15 +46,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     @Composable
-
     private fun ConstraintLayoutScope.addTrainingButton() {
             FloatingActionButton(
                     modifier = constrainInParentByBias(
                             horizontalBias = 1f, verticalBias = 1f
                     ).padding(end = 5.dp, bottom = 5.dp).preferredSize(50.dp),
-                    elevation = 5.dp,
+                    elevation = 10.dp,
                     onClick = { showAlertDialog() },
-                    backgroundColor = Color.Blue
+                    backgroundColor = colorResource(R.color.teal_200)
             ) {
                 Image(asset = vectorResource(id = R.drawable.ic_baseline_add_24))
             }
@@ -97,13 +83,15 @@ class MainActivity : AppCompatActivity() {
     private fun showDialog() {
         if (viewModel.dismissState.value){
             AddTrainingDialog(
-                    onSuccess = {data -> addTrainingData(data) },
+                    onSuccess = { data-> addTrainingData(data)} ,
                     onClose = closeAlertDialog()
             )
         }
     }
 
-    private fun addTrainingData(trainigData: TrainingData?): () -> Unit = {}
+    private fun addTrainingData(trainigData: TrainingData?) {
+        viewModel.addTraining(trainigData)
+    }
 
     private fun closeAlertDialog(): () -> Unit = { viewModel.changeDissmisState(false) }
 
