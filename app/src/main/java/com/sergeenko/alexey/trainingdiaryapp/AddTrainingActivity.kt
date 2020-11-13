@@ -7,9 +7,10 @@ import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.viewinterop.InternalInteropApi
 import kotlinx.coroutines.FlowPreview
 import org.koin.android.ext.android.inject
+import java.lang.ref.WeakReference
 
 @ExperimentalFocus
-class AddTrainingActivity : AppCompatActivity() {
+class AddTrainingActivity : AppCompatActivity(), AddTrainingHandler {
 
     private val viewModel: AddTrainingViewModel by inject()
 
@@ -18,7 +19,7 @@ class AddTrainingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AddTrainingScreen(viewModel).get()
+            AddTrainingScreen(viewModel, WeakReference(this)).get()
         }
     }
 }

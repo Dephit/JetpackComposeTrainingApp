@@ -1,26 +1,16 @@
 package com.sergeenko.alexey.trainingdiaryapp
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Text
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.ExperimentalFocus
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focusRequester
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.text.SoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -28,42 +18,52 @@ import androidx.compose.ui.unit.dp
 @ExperimentalFocus
 @Composable
 fun AddTrainingDialogDody(
-        onSuccess: (TrainingData?) -> Unit,
-        onClose: () -> Unit? = {}
+        viewModel: TrainingManagement
 ) {
-    var trainingData: TrainingData?
-    val nameState = savedInstanceState { "" }
-    val dateState = savedInstanceState { "" }
-    val commentState = savedInstanceState { "" }
+    ScrollableBody(viewModel)
+}
 
-    val nameRequester = FocusRequester()
-    val dateFocus = FocusRequester()
-    val commentRequester = FocusRequester()
-    Column(
+@ExperimentalFocus
+@Composable
+fun ScrollableBody(viewModel: TrainingManagement) {
+    val listState = mutableStateOf(listOf(Exercise()))
+    ScrollableColumn(
             Modifier
+                    .fillMaxSize()
                     .background(colorResource(R.color.teal_200))
-                    .border(
-                            border = BorderStroke(1.dp, colorResource(R.color.teal_200)),
-                            shape = RoundedCornerShape(5.dp)
-                    )
 
     ){
-        MyOutlineTextField(label = "Training Name", state = nameState, isSingleLine = true, focus = nameRequester, nextFocus = dateFocus)
-        MyOutlineTextField(state = dateState, label = "Training Date", isSingleLine = true, focus = dateFocus, nextFocus = commentRequester)
-        MyOutlineTextField(state = commentState, label = "Training Comment", isSingleLine = false, focus = commentRequester)
-        Row{
-            TextButton(onClick = {
-                trainingData = TrainingData(
-                        name = nameState.value,
-                        comment = commentState.value,
-                )
-                onSuccess(trainingData)
-            }) {
-                Text(text = "Ok")
-            }
-            TextButton(onClick = {
-                onClose()
-            }) { Text(text = "Close") }
+        MyOutlineTextField(label = "Training Name", onValueChanged = { value -> viewModel.setName(value)}, isSingleLine = true)
+        MyOutlineTextField(onValueChanged = { value -> viewModel.setDate(value)}, label = "Training Date", isSingleLine = true)
+        MyOutlineTextField(onValueChanged = { value -> viewModel.setComment(value)}, label = "Training Comment", isSingleLine = false)
+        listState.value.forEach {
+            ExerciseView(it)
+        }
+        ExerciseBloc(listState)
+    }
+}
+
+@Composable
+fun ExerciseView(exercise: Exercise) {
+    exercise.name?.let { Text(text = it) }
+}
+
+@Composable
+fun ExerciseBloc(listState: MutableState<List<Exercise>>) {
+    Row{
+        FloatingActionButton(onClick = {
+            val list = listState.value.toMutableList()
+            list.removeLast()
+            listState.value = list
+        }) {
+            Text(text = "-")
+        }
+        FloatingActionButton(onClick = {
+            val list = listState.value.toMutableList()
+            list.add(Exercise(name = list.size.toString()))
+            listState.value = list
+        }) {
+            Text(text = "+")
         }
     }
 }
@@ -72,33 +72,21 @@ fun AddTrainingDialogDody(
 @Composable
 fun MyOutlineTextField(
         placeHolder: String = "",
-        state: MutableState<String>,
+        onValueChanged: (String) -> Unit,
         label: String = "",
         isSingleLine: Boolean = false,
-        focus: FocusRequester = FocusRequester(),
-        nextFocus: FocusRequester? = null,
 ) {
+    val state = savedInstanceState { "" }
     OutlinedTextField(
             modifier = Modifier
-                    .focusRequester(focus)
-                    .padding(
-                            start = 10.dp,
-                            end = 10.dp,
-                            top = 2.5.dp,
-                            bottom = 2.5.dp,
-                    ),
+                    .padding(start = 10.dp, end = 10.dp, top = 2.5.dp, bottom = 2.5.dp)
+                    .fillMaxWidth(),
             value = state.value,
             activeColor = colorResource(R.color.purple_500),
             imeAction = if (isSingleLine) ImeAction.Done else ImeAction.NoAction,
             textStyle = TextStyle(
                     color = colorResource(R.color.purple_500)
             ),
-            onImeActionPerformed = { imeAction: ImeAction, softwareKeyboardController: SoftwareKeyboardController? ->
-                if (imeAction == ImeAction.Done) {
-                    softwareKeyboardController?.hideSoftwareKeyboard()
-                    nextFocus?.requestFocus() ?: focus.freeFocus()
-                }
-            },
             label = {
                 Text(text = label, color = colorResource(R.color.purple_500))
             },
@@ -106,6 +94,8 @@ fun MyOutlineTextField(
                 Text(text = placeHolder, color = colorResource(R.color.white))
             },
             onValueChange = {
+                onValueChanged(it)
                 state.value = it
             })
 }
+

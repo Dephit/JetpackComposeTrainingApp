@@ -3,13 +3,16 @@ package com.sergeenko.alexey.trainingdiaryapp
 import androidx.compose.foundation.Box
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawShadow
+import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -19,22 +22,33 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 
+@ExperimentalMaterialApi
 @Composable
-fun TrainingList(data: List<TrainingData>, onClick: ()-> Unit) {
+fun TrainingList(data: List<TrainingData>, onClick: () -> Unit, onSwipe: (data: TrainingData?) -> Unit) {
     LazyColumnFor(items = data,
             contentPadding = PaddingValues(all = 5.dp)
     ) {
-        TrainingItem(it, onClick)
+        TrainingItem(it, onClick, onSwipe)
     }
 
 }
 
+@ExperimentalMaterialApi
 @Composable
-private fun TrainingItem(trainingData: TrainingData, onClick: ()-> Unit) {
+private fun TrainingItem(trainingData: TrainingData, onClick: () -> Unit, onSwipe: (data: TrainingData?) -> Unit) {
     Column(
-            modifier = Modifier.fillMaxWidth().padding(
-                    bottom = 5.dp
-            ).drawShadow(elevation = 5.dp, opacity = 0.8f, shape = RoundedCornerShape(corner = CornerSize(5.dp)), clip = true),
+            modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 5.dp)
+                    .drawShadow(elevation = 5.dp, opacity = 0.8f, shape = RoundedCornerShape(corner = CornerSize(5.dp)), clip = true)
+                    /*.draggable(
+                            orientation = Orientation.Horizontal,
+                            onDrag = {
+                                if(this.density > 5){
+                                    onSwipe(trainingData)
+                                }
+                            }
+                    )*/
     ) {
         Box(
                 modifier = Modifier.clickable(onClick = onClick),

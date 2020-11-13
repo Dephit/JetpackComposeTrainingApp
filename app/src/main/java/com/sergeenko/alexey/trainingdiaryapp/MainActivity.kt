@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.ConstraintLayoutScope
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.ExperimentalFocus
 import androidx.compose.ui.platform.setContent
@@ -19,14 +20,29 @@ class MainActivity : AppCompatActivity(), MainHandler {
 
     private val viewModel: MainScreenViewModel by inject()
 
+    @ExperimentalMaterialApi
     @InternalInteropApi
     @FlowPreview
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MainScreen(viewModel, WeakReference(this)).get()
-            viewModel.trainingList = TrainingListConvert().stringToSomeObjectList(savedInstanceState?.getString("trainingList"))
-            viewModel.globalState.postValue(savedInstanceState?.get("viewModelState") as UserListState? ?: UserListState.DefaultState)
+            setViewModel(savedInstanceState)
+        }
+    }
+
+    private fun setViewModel(savedInstanceState: Bundle?) {
+        with(viewModel){
+            trainingList = TrainingListConvert()
+                    .stringToSomeObjectList(
+                            savedInstanceState?.getString("trainingList")
+                    )
+            globalState.postValue(
+                    savedInstanceState?.get("viewModelState") as UserListState?
+                            ?: UserListState.DefaultState)
+            if(trainingList!!.isEmpty()){
+                loadTrainingList()
+            }
         }
     }
 

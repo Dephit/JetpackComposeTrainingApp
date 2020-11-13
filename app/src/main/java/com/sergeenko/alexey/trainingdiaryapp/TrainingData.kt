@@ -11,11 +11,11 @@ data class TrainingData(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     @TypeConverters(DateConverter::class)
-    val date: Calendar? = null,
+    var date: Calendar? = null,
     var name: String? = null,
     var comment: String? = null,
     @TypeConverters(ExerciseListConvert::class)
-    val exercises: List<Exercise>? = null
+    var exercises: List<Exercise>? = null
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
             parcel.readInt(),
