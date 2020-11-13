@@ -29,9 +29,7 @@ fun ConstraintLayoutScope.ErrorState(function: () -> Unit) {
                         .align(Alignment.CenterHorizontally)
                         .align(Alignment.CenterVertically)
         )
-        Button(onClick = {
-            changeState(function)
-        }) {
+        Button(onClick = function) {
             Text(text = "Press to load clients")
         }
     }

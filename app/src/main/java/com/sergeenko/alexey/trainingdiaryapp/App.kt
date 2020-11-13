@@ -20,30 +20,43 @@ class App: Application() {
             // use modules
             modules(
                 roomModule,
-                viewModelModule)
-
+                viewModelModule,
+                mainModule
+            )
         }
-
     }
+
+    private val viewModelModule = module {
+        viewModel {
+            MainScreenViewModel(get())
+        }
+        viewModel {
+            AddTrainingViewModel(get())
+        }
+    }
+
+    private val mainModule = module{
+        /*factory(qualifier = named("MainScreen")) {
+            MainScreen()
+        }
+        factory{
+            AddTrainingScreen()
+        }*/
+    }
+
+    private val roomModule = module {
+        single {
+            Room.databaseBuilder(get(), AppDatabase::class.java, "diary_db")
+                    .fallbackToDestructiveMigration()
+                    .build()
+        }
+        single {
+            (get() as AppDatabase).trainingDao()
+        }
+    }
+
+
+
+
+
 }
-
-val viewModelModule = module {
-    viewModel {
-        StartViewModel(get())
-    }
-}
-
-
-val roomModule = module {
-    single {
-        Room.databaseBuilder(get(), AppDatabase::class.java, "diary_db")
-                .fallbackToDestructiveMigration()
-                .build()
-    }
-    single {
-        (get() as AppDatabase).trainingDao()
-    }
-}
-
-
-

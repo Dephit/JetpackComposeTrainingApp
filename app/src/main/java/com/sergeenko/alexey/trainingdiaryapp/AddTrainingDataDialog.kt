@@ -4,33 +4,26 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.*
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.savedinstancestate.savedInstanceState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.ExperimentalFocus
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focusRequester
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.SoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-
-@ExperimentalFocus
-@Composable
-fun AddTrainingDialog(
-        onSuccess: (TrainingData?) -> Unit,
-        onClose: () -> Unit? = {}
-) {
-    Dialog(
-            onDismissRequest = { onClose() },
-    ) {
-        AddTrainingDialogDody(
-                onSuccess =  {trainingData ->  onSuccess(trainingData) }
-        ) { onClose() }
-    }
-}
 
 @ExperimentalFocus
 @Composable
@@ -39,9 +32,13 @@ fun AddTrainingDialogDody(
         onClose: () -> Unit? = {}
 ) {
     var trainingData: TrainingData?
-    val nameState = remember { mutableStateOf(TextFieldValue()) }
-    val dateState = remember { mutableStateOf(TextFieldValue()) }
-    val commentState = remember { mutableStateOf(TextFieldValue()) }
+    val nameState = savedInstanceState { "" }
+    val dateState = savedInstanceState { "" }
+    val commentState = savedInstanceState { "" }
+
+    val nameRequester = FocusRequester()
+    val dateFocus = FocusRequester()
+    val commentRequester = FocusRequester()
     Column(
             Modifier
                     .background(colorResource(R.color.teal_200))
@@ -51,18 +48,22 @@ fun AddTrainingDialogDody(
                     )
 
     ){
-        MyOutlineTextField(label = "Training Name", state = nameState, isSingleLine = true)
-        MyOutlineTextField(label = "Training Date", state = dateState, isSingleLine = true)
-        MyOutlineTextField(label = "Training Comment", state = commentState, isSingleLine = false)
+        MyOutlineTextField(label = "Training Name", state = nameState, isSingleLine = true, focus = nameRequester, nextFocus = dateFocus)
+        MyOutlineTextField(state = dateState, label = "Training Date", isSingleLine = true, focus = dateFocus, nextFocus = commentRequester)
+        MyOutlineTextField(state = commentState, label = "Training Comment", isSingleLine = false, focus = commentRequester)
         Row{
             TextButton(onClick = {
                 trainingData = TrainingData(
-                        name = nameState.value.text,
-                        comment = commentState.value.text,
+                        name = nameState.value,
+                        comment = commentState.value,
                 )
                 onSuccess(trainingData)
-            }) { Text(text = "Ok") }
-            TextButton(onClick = { onClose() }) { Text(text = "Close") }
+            }) {
+                Text(text = "Ok")
+            }
+            TextButton(onClick = {
+                onClose()
+            }) { Text(text = "Close") }
         }
     }
 }
@@ -71,12 +72,15 @@ fun AddTrainingDialogDody(
 @Composable
 fun MyOutlineTextField(
         placeHolder: String = "",
-        state: MutableState<TextFieldValue>,
+        state: MutableState<String>,
         label: String = "",
         isSingleLine: Boolean = false,
+        focus: FocusRequester = FocusRequester(),
+        nextFocus: FocusRequester? = null,
 ) {
     OutlinedTextField(
             modifier = Modifier
+                    .focusRequester(focus)
                     .padding(
                             start = 10.dp,
                             end = 10.dp,
@@ -85,10 +89,16 @@ fun MyOutlineTextField(
                     ),
             value = state.value,
             activeColor = colorResource(R.color.purple_500),
-            imeAction = if (isSingleLine) ImeAction.Done else ImeAction.Unspecified,
+            imeAction = if (isSingleLine) ImeAction.Done else ImeAction.NoAction,
             textStyle = TextStyle(
                     color = colorResource(R.color.purple_500)
             ),
+            onImeActionPerformed = { imeAction: ImeAction, softwareKeyboardController: SoftwareKeyboardController? ->
+                if (imeAction == ImeAction.Done) {
+                    softwareKeyboardController?.hideSoftwareKeyboard()
+                    nextFocus?.requestFocus() ?: focus.freeFocus()
+                }
+            },
             label = {
                 Text(text = label, color = colorResource(R.color.purple_500))
             },

@@ -11,8 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TrainingDiaryApp">
         <activity
-            android:name=".TrainingListActivity"
-            android:screenOrientation="sensorPortrait"/>
+            android:name=".AddTrainingActivity"
+            />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

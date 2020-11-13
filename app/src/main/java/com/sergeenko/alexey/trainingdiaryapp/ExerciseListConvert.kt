@@ -27,3 +27,25 @@ class ExerciseListConvert {
         return Gson().toJson(someObjects)
     }
 }
+
+class TrainingListConvert {
+
+    @TypeConverter
+    fun stringToSomeObjectList(d: String?): List<TrainingData>? {
+        val data = d ?: return Collections.emptyList()
+        if (data == "" || data == "null" || data == "[]" || data.isEmpty()) {
+            return Collections.emptyList()
+        }
+        val listType: Type = object : TypeToken<List<TrainingData?>?>() {}.type
+        return try {
+            Gson().fromJson(data, listType)
+        }catch (e:Exception){
+            Collections.emptyList()
+        }
+    }
+
+    @TypeConverter
+    fun someObjectListToString(someObjects: List<TrainingData>?): String? {
+        return Gson().toJson(someObjects)
+    }
+}

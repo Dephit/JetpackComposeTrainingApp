@@ -2,6 +2,7 @@ package com.sergeenko.alexey.trainingdiaryapp
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import java.util.*
 
@@ -59,6 +60,9 @@ interface TrainingDao{
     fun deleteClient(trainingData: TrainingData)
 
     @Query("SELECT * FROM TrainingData")
-    fun getTrainingsLiveData(): List<TrainingData>
+    fun getTrainings(): List<TrainingData>
+
+    @Query("SELECT * FROM TrainingData")
+    fun getTrainingsLiveData(): LiveData<List<TrainingData>>
 
 }
