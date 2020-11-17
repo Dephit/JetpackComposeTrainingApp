@@ -15,7 +15,7 @@ fun ConstraintLayoutScope.AddTrainingButton(onClick: ()->Unit)  {
         FloatingActionButton(
                 modifier = constrainInParentByBias(
                         horizontalBias = 1f, verticalBias = 1f
-                ).padding(end = 5.dp, bottom = 5.dp).preferredSize(50.dp),
+                ).padding(end = 10.dp, bottom = 10.dp).preferredSize(50.dp),
                 elevation = 10.dp,
                 onClick = onClick,
                 backgroundColor = colorResource(R.color.teal_200)
