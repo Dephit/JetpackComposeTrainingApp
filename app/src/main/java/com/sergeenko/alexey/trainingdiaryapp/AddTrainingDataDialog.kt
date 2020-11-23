@@ -1,12 +1,13 @@
 package com.sergeenko.alexey.trainingdiaryapp
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Box
+import androidx.compose.foundation.ScrollableColumn
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.RowScope.align
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextButton
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -16,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawShadow
 import androidx.compose.ui.focus.ExperimentalFocus
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -49,34 +49,35 @@ fun ScrollableBody(viewModel: TrainingManagement) {
     }
 }
 
+@ExperimentalFocus
 @Composable
 fun Exercises(viewModel: TrainingManagement){
     with(viewModel.getExerciseListState().observeAsState()){
-        ExerciseAddingBloc(
-                onRemove = { viewModel.removeLastExercise() },
-                onAdd = { viewModel.addExercise() }
-        )
-        value?.forEach {
-            ExerciseView(it)
+        Box(
+                modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 10.dp, end = 10.dp, top = 2.5.dp, bottom = 2.5.dp)
+                        .background(colorResource(id = R.color.purple_500), shape = RoundedCornerShape(size = 5.dp))
+        ){
+            Column{
+                ExerciseAddingBloc(
+                    title = "Exercises",
+                    onRemove = { viewModel.removeLastExercise() },
+                    onAdd = { viewModel.addExercise() }
+                )
+                value?.forEachIndexed { index, exercise ->
+                    ExerciseView(exercise)
+                }
+            }
         }
     }
 }
 
 @Composable
-fun ExerciseView(exercise: Exercise) {
-    exercise.name?.let { Text(text = it) }
-}
-
-@Composable
-fun ExerciseAddingBloc(onAdd: ()-> Unit, onRemove: ()-> Unit ) {
-    Box(
-            modifier = Modifier
-                    .padding(start = 10.dp, end = 10.dp, top = 2.5.dp, bottom = 2.5.dp)
-                    .background(colorResource(id = R.color.purple_500))
-                    .fillMaxWidth()
-    ){
+fun ExerciseAddingBloc(title: String, onAdd: ()-> Unit, onRemove: ()-> Unit ) {
+    Box{
         Row{
-            Text(text = "Exercises",
+            Text(text = title,
                     modifier = Modifier.align(Alignment.CenterVertically).padding(start = 15.dp),
                     style = TextStyle(color = colorResource(id = R.color.white), fontSize = TextUnit.Sp(18))
             )

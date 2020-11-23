@@ -5,8 +5,8 @@ import android.os.Parcelable
 import android.provider.MediaStore
 
 data class SetData(
-        val weight: Double = 0.0,
-        val reps: Int = 0,
+        var weight: Double = 0.0,
+        var reps: Int = 0,
         val comment: String? = null,
         val video: MediaStore.Video? = null
 ) : Parcelable {

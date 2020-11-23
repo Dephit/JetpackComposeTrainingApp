@@ -1,6 +1,7 @@
 package com.sergeenko.alexey.trainingdiaryapp
 
 import android.app.Application
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
@@ -49,7 +50,6 @@ class AddTrainingViewModel(application: Application) : BaseModel(application), A
 
     override fun getExercises(): List<Exercise> = trainingData.exercises ?: listOf()
 
-
     override fun getExerciseListState(): MutableLiveData<List<Exercise>> = exercisesState
 
     override fun removeLastExercise() {
@@ -59,10 +59,13 @@ class AddTrainingViewModel(application: Application) : BaseModel(application), A
     }
 
     override fun addExercise() {
-        val list = trainingData.exercises?.toMutableList()
-        list?.add(
-                Exercise(name = "New Exercise")
-        )
-        setExerciseList(list?.toList() ?: listOf())
+        val list = trainingData.exercises?.toMutableList() ?: mutableListOf()
+        list.add(Exercise(name = "New Exercise"))
+        setExerciseList(list.toList())
     }
+
+    override fun updateState() {
+        exercisesState.postValue(trainingData.exercises)
+    }
+
 }

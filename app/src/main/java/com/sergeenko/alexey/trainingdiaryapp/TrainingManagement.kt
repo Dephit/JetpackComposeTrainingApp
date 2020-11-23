@@ -12,4 +12,5 @@ interface TrainingManagement {
     fun getExerciseListState(): MutableLiveData<List<Exercise>>
     fun removeLastExercise()
     fun addExercise()
+    fun updateState()
 }
