@@ -1,4 +1,5 @@
-package com.sergeenko.alexey.trainingdiaryapp
+/*
+package com.sergeenko.alexey.trainingdiaryapp.Compose
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.ConstraintLayout
@@ -11,6 +12,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.ExperimentalFocus
 import androidx.compose.ui.res.colorResource
+import com.sergeenko.alexey.trainingdiaryapp.*
 import java.lang.ref.WeakReference
 
 @ExperimentalMaterialApi
@@ -53,3 +55,4 @@ class MainScreen(private val viewModel: MainScreenViewModel, private val mainHan
 
 }
 
+*/

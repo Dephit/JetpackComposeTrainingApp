@@ -1,6 +1,7 @@
-package com.sergeenko.alexey.trainingdiaryapp
+package com.sergeenko.alexey.trainingdiaryapp.Compose
 
 import androidx.compose.foundation.Image
+/*
 import androidx.compose.foundation.layout.ConstraintLayoutScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredSize
@@ -9,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import com.sergeenko.alexey.trainingdiaryapp.R
 
 @Composable
 fun ConstraintLayoutScope.AddTrainingButton(onClick: ()->Unit)  {
@@ -23,3 +25,4 @@ fun ConstraintLayoutScope.AddTrainingButton(onClick: ()->Unit)  {
             Image(asset = vectorResource(id = R.drawable.ic_baseline_add_24))
         }
 }
+*/

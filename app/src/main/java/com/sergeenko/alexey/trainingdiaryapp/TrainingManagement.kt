@@ -1,6 +1,5 @@
 package com.sergeenko.alexey.trainingdiaryapp
 
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.MutableLiveData
 
 interface TrainingManagement {

@@ -1,4 +1,5 @@
-package com.sergeenko.alexey.trainingdiaryapp
+/*
+package com.sergeenko.alexey.trainingdiaryapp.Compose
 
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.ConstraintLayout
@@ -8,6 +9,7 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.focus.ExperimentalFocus
+import com.sergeenko.alexey.trainingdiaryapp.*
 import java.lang.ref.WeakReference
 
 class AddTrainingScreen(private val viewModel: AddTrainingViewModel, private val handler: WeakReference<AddTrainingHandler>): BaseScreen() {
@@ -51,3 +53,4 @@ class AddTrainingScreen(private val viewModel: AddTrainingViewModel, private val
         viewModel.addTraining(trainingData)
     }
 }
+*/

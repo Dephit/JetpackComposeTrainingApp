@@ -1,8 +1,9 @@
-package com.sergeenko.alexey.trainingdiaryapp
+/*
+package com.sergeenko.alexey.trainingdiaryapp.Compose
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import org.koin.core.qualifier.named
+import com.sergeenko.alexey.trainingdiaryapp.Screen
 
 open class BaseScreen: Screen {
 
@@ -13,3 +14,4 @@ open class BaseScreen: Screen {
     }
 
 }
+*/

@@ -14,9 +14,9 @@ android {
     buildToolsVersion "29.0.3"
 
 
-    buildFeatures{
+    /*buildFeatures{
         compose true
-    }
+    }*/
 
     defaultConfig {
         applicationId "com.sergeenko.alexey.trainingdiaryapp"
@@ -41,13 +41,13 @@ android {
 
     kotlinOptions {
         jvmTarget = '1.8'
-        useIR = true
+        //useIR = true
     }
 
-    composeOptions {
+    /*composeOptions {
         kotlinCompilerVersion '1.4.0'
         kotlinCompilerExtensionVersion compose_version
-    }
+    }*/
 }
 
 dependencies {

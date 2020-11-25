@@ -1,13 +1,11 @@
-package com.sergeenko.alexey.trainingdiaryapp
+/*
+package com.sergeenko.alexey.trainingdiaryapp.Compose
 
-import androidx.compose.foundation.Box
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope.align
 import androidx.compose.foundation.layout.ConstraintLayoutScope
 import androidx.compose.foundation.layout.RowScope.align
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -37,3 +35,4 @@ fun ConstraintLayoutScope.ErrorState(function: () -> Unit) {
 
 
 
+*/

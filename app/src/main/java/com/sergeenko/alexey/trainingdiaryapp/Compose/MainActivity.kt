@@ -1,4 +1,5 @@
-package com.sergeenko.alexey.trainingdiaryapp
+/*
+package com.sergeenko.alexey.trainingdiaryapp.Compose
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.ExperimentalFocus
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.viewinterop.InternalInteropApi
+import com.sergeenko.alexey.trainingdiaryapp.MainHandler
+import com.sergeenko.alexey.trainingdiaryapp.MainScreenViewModel
+import com.sergeenko.alexey.trainingdiaryapp.TrainingListConvert
+import com.sergeenko.alexey.trainingdiaryapp.UserListState
 import kotlinx.coroutines.FlowPreview
 import org.koin.android.ext.android.inject
 import java.lang.ref.WeakReference
@@ -72,3 +77,4 @@ fun ConstraintLayoutScope.constrainInParentByBias(horizontalBias: Float, vertica
 }
 
 
+*/

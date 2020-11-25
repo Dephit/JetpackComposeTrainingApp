@@ -1,8 +1,6 @@
 package com.sergeenko.alexey.trainingdiaryapp
 
 import android.app.Application
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -12,14 +10,11 @@ import org.koin.android.ext.android.get
 import java.sql.RowId
 
 class MainScreenViewModel(application: Application) : BaseModel(application) {
-    val globalState = MutableLiveData<UserListState>()
+    val globalState = MutableLiveData<UserListState>(UserListState.DefaultState)
     private val trainingDao: TrainingDao = app.get()
     var  trainingList: List<TrainingData>? = listOf()
 
-    @Composable
-    fun observeOnLiveData(): State<List<TrainingData>> {
-        return trainingDao.getTrainingsLiveData().observeAsState(initial = trainingList!!)
-    }
+    fun getListObservable() = trainingDao.getTrainingsLiveData()
 
     fun loadTrainingList() {
         globalState.postValue(UserListState.LoadingState)

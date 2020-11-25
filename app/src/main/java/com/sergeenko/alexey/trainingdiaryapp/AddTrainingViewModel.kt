@@ -2,11 +2,13 @@ package com.sergeenko.alexey.trainingdiaryapp
 
 import android.app.Application
 import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
 import java.util.*
@@ -25,11 +27,12 @@ class AddTrainingViewModel(application: Application) : BaseModel(application), A
 
     override fun addTraining(trainigData: TrainingData?) {
         globalState.postValue(TrainingManagementState.SavingState)
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(IO) {
             trainigData?.let { trainingDao.insertTraining(it) }
             globalState.postValue(TrainingManagementState.Saved)
         }
     }
+
 
     override fun setName(string: String) {
         trainingData.name = string

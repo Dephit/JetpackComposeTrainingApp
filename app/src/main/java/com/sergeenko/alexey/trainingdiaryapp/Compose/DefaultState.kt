@@ -1,4 +1,5 @@
-package com.sergeenko.alexey.trainingdiaryapp
+/*
+package com.sergeenko.alexey.trainingdiaryapp.Compose
 
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
@@ -30,3 +31,4 @@ fun ConstraintLayoutScope.DefaultState(onClick: ()->Unit) {
     }
 }
 
+*/

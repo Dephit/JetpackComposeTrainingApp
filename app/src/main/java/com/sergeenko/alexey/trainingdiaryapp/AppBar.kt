@@ -1,6 +1,7 @@
 package com.sergeenko.alexey.trainingdiaryapp
 
 import androidx.compose.foundation.Text
+/*
 import androidx.compose.foundation.layout.ColumnScope.align
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
@@ -22,3 +23,4 @@ fun AppBar(tittle: String): @Composable (() -> Unit)? {
             }
     }
 }
+*/

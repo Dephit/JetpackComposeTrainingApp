@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Training Diary App</string>
+    <string name="add_training_item">Добавить тренеровку</string>
+    <string name="training_name">Название тренировки</string>
+    <string name="training_date">Дата тренировки</string>
+    <string name="comment">Комментарий</string>
 </resources>
