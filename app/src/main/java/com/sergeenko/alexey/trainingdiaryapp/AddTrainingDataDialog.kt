@@ -77,15 +77,20 @@ fun Exercises(viewModel: TrainingManagement){
 fun ExerciseAddingBloc(title: String, onAdd: ()-> Unit, onRemove: ()-> Unit ) {
     Box{
         Row{
-            Text(text = title,
-                    modifier = Modifier.align(Alignment.CenterVertically).padding(start = 15.dp),
-                    style = TextStyle(color = colorResource(id = R.color.white), fontSize = TextUnit.Sp(18))
-            )
+            TitleText(title)
             Spacer(modifier = Modifier.width(145.dp))
             MiddleTextButton(onClick = onRemove, text = "Delete")
             MiddleTextButton(onClick = onAdd, text = "Add")
         }
     }
+}
+
+@Composable
+fun TitleText(title: String, modifier: Modifier = Modifier.align(Alignment.CenterVertically).padding(start = 15.dp)) {
+    Text(text = title,
+            modifier = modifier,
+            style = TextStyle(color = colorResource(id = R.color.white), fontSize = TextUnit.Sp(18))
+    )
 }
 
 @Composable
