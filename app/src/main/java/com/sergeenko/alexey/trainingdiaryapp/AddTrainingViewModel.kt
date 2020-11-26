@@ -4,12 +4,15 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.android.synthetic.main.activity_add_training.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.get
 import java.util.*
 
@@ -38,9 +41,18 @@ class AddTrainingViewModel(application: Application) : BaseModel(application), A
         trainingData.name = string
     }
 
-    override fun setDate(string: String) {
-        trainingData.date = Calendar.getInstance()
+    override fun setDate(date: Calendar) {
+        trainingData.date = date
     }
+
+    override fun setDate(long: Long): String {
+        return if (long != -1L) {
+            val calendar = Calendar.getInstance().getDateFromLong(long)
+            trainingData.date = calendar
+            calendar.getFormattedDate()
+        }else ""
+    }
+
 
     override fun setComment(string: String) {
         trainingData.comment = string

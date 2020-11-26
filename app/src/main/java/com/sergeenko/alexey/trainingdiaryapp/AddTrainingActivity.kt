@@ -2,7 +2,6 @@ package com.sergeenko.alexey.trainingdiaryapp
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.viewModelScope
@@ -11,11 +10,9 @@ import kotlinx.android.synthetic.main.activity_add_training.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 import java.util.*
-import kotlin.coroutines.resume
 
 class AddTrainingActivity : AppCompatActivity() {
 
@@ -38,16 +35,9 @@ class AddTrainingActivity : AppCompatActivity() {
         training_date.editText?.setOnClickListener {
             with(viewModel){
                 viewModelScope.launch(IO) {
-                    val long = showCalendar()
-                    if (long != -1L) {
-                        withContext(Main){
-                            val calendar = Calendar.getInstance()
-                            val date = Date()
-                            date.time = long
-                            calendar.time = date
-                            training_date.editText!!.setText(calendar.getFormattedDate())
-                            setDate(calendar.getFormattedDate())
-                        }
+                    val long = showCalendar(supportFragmentManager = supportFragmentManager)
+                    withContext(Main){
+                        training_date.editText!!.setText(setDate(long))
                     }
                 }
             }
@@ -57,23 +47,16 @@ class AddTrainingActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun showCalendar(): Long {
-        return suspendCancellableCoroutine{cont->
-            val calendar = MaterialDatePicker.Builder
-                    .datePicker()
-                    .build()
-            calendar.addOnPositiveButtonClickListener {
-                cont.resume(it)
-            }
-            calendar.addOnCancelListener {
-                cont.resume(-1)
-            }
-            calendar.show(supportFragmentManager, "Calendar")
-        }
-    }
-
     fun addTraining(view: View){
         viewModel.addTraining(viewModel.trainingData)
         onBackPressed()
     }
 }
+
+fun Calendar.getDateFromLong(long: Long): Calendar {
+    val date = Date()
+    date.time = long
+    time = date
+    return this
+}
+
